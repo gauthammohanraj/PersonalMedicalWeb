@@ -28,10 +28,9 @@ const SymptomForm = ({ onSubmit }) => {
     const formData = {
       chiefComplaint,
       startDate,
-      severity,
+      severity: symptomPresent ? severity : pastSeverity,
       symptomPresent,
-      frequency,
-      pastSeverity,
+      frequency: symptomPresent ? frequency : null,
     };
     onSubmit(formData);
   };
@@ -96,20 +95,6 @@ const SymptomForm = ({ onSubmit }) => {
         )}
       </FormControl>
 
-      {/* Severity */}
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <FormLabel>Severity</FormLabel>
-        <RadioGroup
-          row
-          value={severity}
-          onChange={(e) => setSeverity(e.target.value)}
-        >
-          <FormControlLabel value="Mild" control={<Radio />} label="Mild" />
-          <FormControlLabel value="Moderate" control={<Radio />} label="Moderate" />
-          <FormControlLabel value="Severe" control={<Radio />} label="Severe" />
-        </RadioGroup>
-      </FormControl>
-
       {/* Symptom Present */}
       <FormControlLabel
         control={
@@ -119,41 +104,68 @@ const SymptomForm = ({ onSubmit }) => {
           />
         }
         label="Is this symptom still present?"
+        sx={{ mb: 2 }}
       />
 
-      {/* Frequency */}
-      <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-        <InputLabel id="frequency-label">Frequency</InputLabel>
-        <Select
-          labelId="frequency-label"
-          label="Frequency"
-          value={frequency}
-          onChange={(e) => setFrequency(e.target.value)}
-        >
-          <MenuItem value="Once">Once</MenuItem>
-          <MenuItem value="Twice">Twice</MenuItem>
-          <MenuItem value="A few times">A few times</MenuItem>
-          <MenuItem value="Several times">Several times</MenuItem>
-        </Select>
-      </FormControl>
+      {symptomPresent ? (
+        <>
+          {/* Frequency */}
+          <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+            <InputLabel id="frequency-label">Frequency</InputLabel>
+            <Select
+              labelId="frequency-label"
+              label="Frequency"
+              value={frequency}
+              onChange={(e) => setFrequency(e.target.value)}
+            >
+              <MenuItem value="Once">Once</MenuItem>
+              <MenuItem value="Twice">Twice</MenuItem>
+              <MenuItem value="A few times">A few times</MenuItem>
+              <MenuItem value="Several times">Several times</MenuItem>
+            </Select>
+          </FormControl>
 
-      {/* Past Severity */}
-      <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-        <InputLabel id="past-severity-label">
-          Severity of past symptoms
-        </InputLabel>
-        <Select
-          labelId="past-severity-label"
-          label="Severity of past symptoms"
-          value={pastSeverity}
-          onChange={(e) => setPastSeverity(e.target.value)}
-        >
-          <MenuItem value="None">None</MenuItem>
-          <MenuItem value="Mild">Mild</MenuItem>
-          <MenuItem value="Moderate">Moderate</MenuItem>
-          <MenuItem value="Severe">Severe</MenuItem>
-        </Select>
-      </FormControl>
+          {/* Current Severity */}
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <FormLabel>Current Severity</FormLabel>
+            <RadioGroup
+              row
+              value={severity}
+              onChange={(e) => setSeverity(e.target.value)}
+            >
+              <FormControlLabel value="Mild" control={<Radio />} label="Mild" />
+              <FormControlLabel
+                value="Moderate"
+                control={<Radio />}
+                label="Moderate"
+              />
+              <FormControlLabel
+                value="Severe"
+                control={<Radio />}
+                label="Severe"
+              />
+            </RadioGroup>
+          </FormControl>
+        </>
+      ) : (
+        /* Past Severity */
+        <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+          <InputLabel id="past-severity-label">
+            Severity of past symptoms
+          </InputLabel>
+          <Select
+            labelId="past-severity-label"
+            label="Severity of past symptoms"
+            value={pastSeverity}
+            onChange={(e) => setPastSeverity(e.target.value)}
+          >
+            <MenuItem value="None">None</MenuItem>
+            <MenuItem value="Mild">Mild</MenuItem>
+            <MenuItem value="Moderate">Moderate</MenuItem>
+            <MenuItem value="Severe">Severe</MenuItem>
+          </Select>
+        </FormControl>
+      )}
 
       {/* Submit */}
       <Button variant="contained" color="primary" type="submit">
