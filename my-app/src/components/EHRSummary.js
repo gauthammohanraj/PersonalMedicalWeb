@@ -53,121 +53,153 @@ const EHRSummary = () => {
   // Check whether state was passed via navigate()
   if (!location.state) {
     return (
-      <Container sx={{ mt: 5, textAlign: "center" }}>
-        <Typography variant="h6">
-          No symptom data found. Please fill out the form first.
-        </Typography>
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={() => navigate("/not-sure-who-to-see")}
-        >
-          Go to Symptom Form
-        </Button>
-      </Container>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          background: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          p: 2
+        }}
+      >
+        <Container sx={{ textAlign: "center" }}>
+          <Typography variant="h6">
+            No symptom data found. Please fill out the form first.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            onClick={() => navigate("/not-sure-who-to-see")}
+          >
+            Go to Symptom Form
+          </Button>
+        </Container>
+      </Box>
     );
   }
 
   const { symptoms, pastMedicalHistory } = location.state;
-
   const recommendedSpecialties = getRecommendedSpecialties(symptoms);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 5, mb: 5 }}>
-      <Typography variant="h4" gutterBottom textAlign="center">
-        Preliminary Electronic Health Record (EHR)
-      </Typography>
+    // Outer Box with gradient background
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        p: 2
+      }}
+    >
+      {/* Inner container for content */}
+      <Container
+        maxWidth="md"
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          borderRadius: 2,
+          p: 3,
+          boxShadow: 3
+        }}
+      >
+        <Typography variant="h4" gutterBottom textAlign="center">
+          Preliminary Electronic Health Record (EHR)
+        </Typography>
 
-      {symptoms.map((sym, idx) => {
-        const heading = idx === 0 ? "Chief Complaint" : `Associated Symptom #${idx}`;
-        const isChestOrAbdPain =
-          sym.name.toLowerCase().includes("chest") ||
-          sym.name.toLowerCase().includes("abdom");
+        {symptoms.map((sym, idx) => {
+          const heading = idx === 0 ? "Chief Complaint" : `Associated Symptom #${idx}`;
+          const isChestOrAbdPain =
+            sym.name.toLowerCase().includes("chest") ||
+            sym.name.toLowerCase().includes("abdom");
 
-        return (
-          <Card key={idx} sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {heading}
-              </Typography>
-              <Divider sx={{ mb: 1 }} />
-              <Typography variant="body1">
-                <strong>Symptom:</strong> {sym.name}
-              </Typography>
-              <Typography variant="body1">
-                <strong>When It Started:</strong> {sym.startDate}
-              </Typography>
-              {sym.startDate === "Other" && sym.otherStartDescription && (
-                <Typography variant="body1">
-                  <strong>Description:</strong> {sym.otherStartDescription}
+          return (
+            <Card key={idx} sx={{ mb: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {heading}
                 </Typography>
-              )}
-              <Typography variant="body1">
-                <strong>Is Present:</strong> {sym.isPresent ? "Yes" : "No"}
-              </Typography>
-              {sym.isPresent ? (
-                <>
-                  <Typography variant="body1">
-                    <strong>Frequency:</strong> {sym.frequency}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Current Severity:</strong> {sym.severity}
-                  </Typography>
-                </>
-              ) : (
+                <Divider sx={{ mb: 1 }} />
                 <Typography variant="body1">
-                  <strong>Past Severity:</strong> {sym.pastSeverity}
+                  <strong>Symptom:</strong> {sym.name}
                 </Typography>
-              )}
-              <Typography variant="body1">
-                <strong>Had Similar Symptoms Before:</strong> {sym.similarSymptomsBefore ? "Yes" : "No"}
-              </Typography>
-              {isChestOrAbdPain && (
-                <>
-                  {sym.radiation && sym.radiation.length > 0 && (
+                <Typography variant="body1">
+                  <strong>When It Started:</strong> {sym.startDate}
+                </Typography>
+                {sym.startDate === "Other" && sym.otherStartDescription && (
+                  <Typography variant="body1">
+                    <strong>Description:</strong> {sym.otherStartDescription}
+                  </Typography>
+                )}
+                <Typography variant="body1">
+                  <strong>Is Present:</strong> {sym.isPresent ? "Yes" : "No"}
+                </Typography>
+                {sym.isPresent ? (
+                  <>
                     <Typography variant="body1">
-                      <strong>Radiation:</strong> {sym.radiation.join(", ")}
+                      <strong>Frequency:</strong> {sym.frequency}
                     </Typography>
-                  )}
-                  {sym.quality && (
                     <Typography variant="body1">
-                      <strong>Quality:</strong> {sym.quality}
+                      <strong>Current Severity:</strong> {sym.severity}
                     </Typography>
-                  )}
-                </>
-              )}
-            </CardContent>
-          </Card>
-        );
-      })}
+                  </>
+                ) : (
+                  <Typography variant="body1">
+                    <strong>Past Severity:</strong> {sym.pastSeverity}
+                  </Typography>
+                )}
+                <Typography variant="body1">
+                  <strong>Had Similar Symptoms Before:</strong>{" "}
+                  {sym.similarSymptomsBefore ? "Yes" : "No"}
+                </Typography>
+                {isChestOrAbdPain && (
+                  <>
+                    {sym.radiation && sym.radiation.length > 0 && (
+                      <Typography variant="body1">
+                        <strong>Radiation:</strong> {sym.radiation.join(", ")}
+                      </Typography>
+                    )}
+                    {sym.quality && (
+                      <Typography variant="body1">
+                        <strong>Quality:</strong> {sym.quality}
+                      </Typography>
+                    )}
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
 
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Past Medical History
-          </Typography>
-          <Divider sx={{ mb: 1 }} />
-          <Typography variant="body1">
-            {pastMedicalHistory.trim() !== "" ? pastMedicalHistory : "None"}
-          </Typography>
-        </CardContent>
-      </Card>
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Past Medical History
+            </Typography>
+            <Divider sx={{ mb: 1 }} />
+            <Typography variant="body1">
+              {pastMedicalHistory.trim() !== "" ? pastMedicalHistory : "None"}
+            </Typography>
+          </CardContent>
+        </Card>
 
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Recommended Specialties
-          </Typography>
-          <Typography variant="body1">{recommendedSpecialties}</Typography>
-        </CardContent>
-      </Card>
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Recommended Specialties
+            </Typography>
+            <Typography variant="body1">{recommendedSpecialties}</Typography>
+          </CardContent>
+        </Card>
 
-      <Box sx={{ textAlign: "center" }}>
-        <Button variant="contained" onClick={() => navigate("/")}>
-          Return to Home
-        </Button>
-      </Box>
-    </Container>
+        <Box sx={{ textAlign: "center" }}>
+          <Button variant="contained" onClick={() => navigate("/")}>
+            Return to Home
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

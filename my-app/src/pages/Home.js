@@ -9,13 +9,13 @@ const Home = () => {
     <Box
       sx={{
         minHeight: '100vh',               // Ensures full viewport height
-        background: 'linear-gradient(135deg,rgb(33, 124, 243) 0%,rgb(176, 39, 110) 100%)', // Gradient background: blue to purple
+        background: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", // Gradient background: blue to purple
         display: 'flex',
         alignItems: 'center',             // Vertically center content
         justifyContent: 'center',         // Horizontally center content
       }}
     >
-      <Box textAlign="center" color="white" p={3}>
+      <Box textAlign="center" color="black" p={3}>
         <Typography variant="h3" sx={{ mb: 2 }}>
           Welcome to Our Medical Helper
         </Typography>

@@ -6,7 +6,6 @@ import {
   CardContent,
   CardActions,
   Button,
-  Box,
 } from "@mui/material";
 
 const NewlyDiagnosed = () => {
